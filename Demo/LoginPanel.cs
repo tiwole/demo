@@ -13,8 +13,7 @@ public class LoginPanel : Panel
     {
         _captcha = new CaptchaControl(imagesPath);
         Dock = DockStyle.Fill;
-
-        // Компактный контейнер по центру
+        
         var inner = new TableLayoutPanel
         {
             AutoSize = true,
@@ -29,27 +28,33 @@ public class LoginPanel : Panel
         for (int i = 0; i < 7; i++) inner.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
         _loginBox.Width = 300;
-        _passBox.Width  = 300;
+        _passBox.Width = 300;
 
-        var shuffleBtn = new Button { Text = "Решить капчу", Width = 300, Height = 28, Margin = new Padding(0, 4, 0, 2) };
+        var shuffleBtn = new Button
+        {
+            Text = "Решить капчу", 
+            Width = 300, 
+            Height = 28, 
+            Margin = new Padding(0, 4, 0, 2)
+        };
         shuffleBtn.Click += (_, _) => _captcha.Shuffle();
 
         var loginBtn = new Button { Text = "Войти", Width = 300, Height = 28, Margin = new Padding(0, 2, 0, 0) };
         loginBtn.Click += OnLogin;
 
-        inner.Controls.Add(Lbl("Логин:"),   0, 0);
-        inner.Controls.Add(_loginBox,        0, 1);
-        inner.Controls.Add(Lbl("Пароль:"),  0, 2);
-        inner.Controls.Add(_passBox,         0, 3);
-        inner.Controls.Add(_captcha,         0, 4);
-        inner.Controls.Add(shuffleBtn,       0, 5);
-        inner.Controls.Add(loginBtn,         0, 6);
+        inner.Controls.Add(Lbl("Логин:"), 0, 0);
+        inner.Controls.Add(_loginBox, 0, 1);
+        inner.Controls.Add(Lbl("Пароль:"), 0, 2);
+        inner.Controls.Add(_passBox, 0, 3);
+        inner.Controls.Add(_captcha, 0, 4);
+        inner.Controls.Add(shuffleBtn, 0, 5);
+        inner.Controls.Add(loginBtn, 0, 6);
 
         // Центрируем inner внутри этого Panel
         SizeChanged += (_, _) =>
         {
             inner.Location = new Point(
-                (Width  - inner.Width)  / 2,
+                (Width - inner.Width) / 2,
                 (Height - inner.Height) / 2);
         };
 
@@ -77,10 +82,13 @@ public class LoginPanel : Panel
                 return;
             }
 
-            var byBoth = db.QueryOne("SELECT * FROM demo_users WHERE login=@l AND password=@p", ("@l", login), ("@p", pass));
+            var byBoth = db.QueryOne("SELECT * FROM demo_users WHERE login=@l AND password=@p", ("@l", login),
+                ("@p", pass));
             if (byBoth == null || !_captcha.IsSolved)
             {
-                MessageBox.Show("Вы ввели неверный пароль или не решили капчу.\nПожалуйста проверьте еще раз введенные данные", "Ошибка");
+                MessageBox.Show(
+                    "Вы ввели неверный пароль или не решили капчу.\nПожалуйста проверьте еще раз введенные данные",
+                    "Ошибка");
                 _failCount++;
                 if (_failCount >= 3)
                     db.Execute("UPDATE demo_users SET status='blocked' WHERE login=@l", ("@l", login));

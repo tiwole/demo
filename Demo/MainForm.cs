@@ -25,12 +25,12 @@ public class MainForm : Form
         _userPanel  = new UserPanel();
         _adminPanel = new AdminPanel();
 
-        Controls.AddRange(new Control[] { _loginPanel, _userPanel, _adminPanel });
-        _userPanel.Visible  = false;
+        Controls.AddRange(_loginPanel, _userPanel, _adminPanel);
+        _userPanel.Visible = false;
         _adminPanel.Visible = false;
 
-        _loginPanel.LoginSuccess    += OnLoginSuccess;
-        _userPanel.LogoutRequested  += (_, _) => ShowPanel(_loginPanel);
+        _loginPanel.LoginSuccess += OnLoginSuccess;
+        _userPanel.LogoutRequested += (_, _) => ShowPanel(_loginPanel);
         _adminPanel.LogoutRequested += (_, _) => ShowPanel(_loginPanel);
 
         FormClosed += (_, _) => Db.Dispose();
@@ -38,9 +38,19 @@ public class MainForm : Form
 
     private void OnLoginSuccess(object? sender, string role)
     {
-        if      (role == "user")  { ShowPanel(_userPanel); }
-        else if (role == "admin") { _adminPanel.Init(); ShowPanel(_adminPanel); }
-        else MessageBox.Show("Ошибка с ролью. Обратитесь к администратору.", "Ошибка");
+        switch (role)
+        {
+            case "user":
+                ShowPanel(_userPanel);
+                break;
+            case "admin":
+                _adminPanel.Init(); 
+                ShowPanel(_adminPanel);
+                break;
+            default:
+                MessageBox.Show("Ошибка с ролью. Обратитесь к администратору.", "Ошибка");
+                break;
+        }
     }
 
     private void ShowPanel(Panel panel)
@@ -48,6 +58,4 @@ public class MainForm : Form
         _loginPanel.Visible = _userPanel.Visible = _adminPanel.Visible = false;
         panel.Visible = true;
     }
-
-
 }
