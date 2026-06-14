@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "tlJUZ13CjGI=",
+  "dgSpecHash": "ZGvan6mw4Hk=",
   "success": true,
   "projectFilePath": "C:\\Users\\tiwole\\RiderProjects\\Demo\\Demo\\Demo.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\tiwole\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
-    "C:\\Users\\tiwole\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
-    "C:\\Users\\tiwole\\.nuget\\packages\\mysqlconnector\\2.5.0\\mysqlconnector.2.5.0.nupkg.sha512"
+    "C:\\Users\\tiwole\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\tiwole\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\tiwole\\.nuget\\packages\\mysqlconnector\\2.6.0\\mysqlconnector.2.6.0.nupkg.sha512",
+    "C:\\Users\\tiwole\\.nuget\\packages\\npgsql\\10.0.3\\npgsql.10.0.3.nupkg.sha512"
   ],
   "logs": []
 }

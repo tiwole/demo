@@ -2,7 +2,7 @@ namespace Demo;
 
 public class MainForm : Form
 {
-    public DatabaseHelper Db { get; private set; }
+    public PostgresDatabaseHelper Db { get; private set; }
     private readonly LoginPanel _loginPanel;
     private readonly UserPanel  _userPanel;
     private readonly AdminPanel _adminPanel;
@@ -14,11 +14,11 @@ public class MainForm : Form
         Text = "Authorize_System";
         Size = new Size(1200, 720);
 
-        try { Db = new DatabaseHelper(); }
+        try { Db = new PostgresDatabaseHelper(); }
         catch
         {
             MessageBox.Show("Ошибка связи с БД! Проверьте сеть и перезапустите приложение.", "Ошибка");
-            Db = new DatabaseHelper();
+            Db = new PostgresDatabaseHelper();
         }
 
         _loginPanel = new LoginPanel(imagesPath);

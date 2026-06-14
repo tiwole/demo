@@ -30,6 +30,9 @@ public class CaptchaControl : Panel
             };
             Controls.Add(_boxes[i]);
         }
+
+        do { Shuffle(); } while (IsSolved);
+        _counter = 0;
     }
 
     public void Shuffle()

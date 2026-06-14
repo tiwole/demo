@@ -14,7 +14,7 @@ public class UserPanel : Panel
 
         var lbl = new Label
         {
-            Text = "Вы успешно вошли как пользователь. Это окно-заглушка для дальнейшей реализации.",
+            Text = "Вы успешно вошли как пользователь.",
             Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter
         };
         layout.Controls.Add(lbl, 0, 0); layout.SetColumnSpan(lbl, 10);

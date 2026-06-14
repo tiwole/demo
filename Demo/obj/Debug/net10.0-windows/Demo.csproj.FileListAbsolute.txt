@@ -21,3 +21,5 @@ C:\Users\tiwole\RiderProjects\Demo\Demo\bin\Debug\net10.0-windows\Microsoft.Exte
 C:\Users\tiwole\RiderProjects\Demo\Demo\bin\Debug\net10.0-windows\MySqlConnector.dll
 C:\Users\tiwole\RiderProjects\Demo\Demo\obj\Debug\net10.0-windows\Demo.csproj.AssemblyReference.cache
 C:\Users\tiwole\RiderProjects\Demo\Demo\obj\Debug\net10.0-windows\Demo.csproj.Up2Date
+C:\Users\tiwole\RiderProjects\Demo\Demo\obj\Debug\net10.0-windows\Demo.sourcelink.json
+C:\Users\tiwole\RiderProjects\Demo\Demo\bin\Debug\net10.0-windows\Npgsql.dll

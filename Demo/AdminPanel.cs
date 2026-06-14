@@ -127,7 +127,8 @@ public class AdminPanel : Panel
                 return;
             }
 
-            db.Execute("INSERT INTO demo_users VALUES (NULL,@l,@p,@r,@f,@s)",
+            // MySQL: db.Execute("INSERT INTO demo_users VALUES (NULL,@l,@p,@r,@f,@s)",
+            db.Execute("INSERT INTO demo_users (login, password, roles, \"FIO\", status) VALUES (@l,@p,@r,@f,@s)",
                 ("@l", login), ("@p", pass), ("@r", role), ("@f", fio), ("@s", status));
             MessageBox.Show("Пользователь успешно зарегистрирован", "Успех");
         }
@@ -144,7 +145,8 @@ public class AdminPanel : Panel
         var db = ((MainForm)FindForm()!).Db;
         try
         {
-            db.Execute("UPDATE demo_users SET password=@p,roles=@r,FIO=@f,status=@s WHERE login=@l",
+            // MySQL: db.Execute("UPDATE demo_users SET password=@p,roles=@r,FIO=@f,status=@s WHERE login=@l",
+            db.Execute("UPDATE demo_users SET password=@p,roles=@r,\"FIO\"=@f,status=@s WHERE login=@l",
                 ("@p", _editPass.Text.Trim()), ("@r", _editRole.Text),
                 ("@f", _editFio.Text.Trim()), ("@s", _editStatus.Text), ("@l", login));
             MessageBox.Show("Пользователь успешно изменен", "Успех");
