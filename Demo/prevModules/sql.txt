@@ -1,0 +1,120 @@
+﻿db2.drawio er-diagram with database
+
+db:
+
+CREATE TABLE IF NOT EXISTS counterparties (
+    counterparty_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+  inn TEXT,
+  address TEXT,
+  phone TEXT,
+  salesman BOOL,
+  buyer BOOL
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    product_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    unit TEXT,
+    price REAL,
+    code TEXT
+);
+
+CREATE TABLE IF NOT EXISTS materials (
+    material_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    unit TEXT,
+    price REAL,
+  code TEXT
+);
+
+CREATE TABLE IF NOT EXISTS bom (
+    product_id INTEGER,
+    material_id INTEGER,
+    quantity REAL,
+    FOREIGN KEY(product_id) REFERENCES products(product_id),
+    FOREIGN KEY(material_id) REFERENCES materials(material_id)
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    order_id INTEGER PRIMARY KEY,
+    code TEXT,
+    date TEXT,
+    customer_id INTEGER,
+    FOREIGN KEY(customer_id) REFERENCES counterparties(counterparty_id)
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    order_id INTEGER,
+    product_id INTEGER,
+    quantity INTEGER,
+    price REAL,
+    amount REAL,
+    FOREIGN KEY(order_id) REFERENCES orders(order_id),
+    FOREIGN KEY(product_id) REFERENCES products(product_id)
+);
+
+insert data:
+
+INSERT INTO counterparties (counterparty_id, name, inn, address, phone, salesman, buyer) VALUES
+(1, 'ООО "Бургер плюс"', NULL, NULL, NULL, true, false),
+(2, 'ООО "Аква-сервис"', NULL, NULL, NULL, false, true);
+
+INSERT INTO products (product_id, name, unit, price, code) VALUES
+(1, 'Бургер "Двойной позитив"', 'шт', 450, 'НФ-00000001'),
+(2, 'Бургер "Душевный"', 'шт', 370, NULL),
+(3, 'Морс клюквенный 0,5л.', 'шт', 70, NULL);
+
+INSERT INTO materials (material_id, name, unit, price, code) VALUES
+(1, 'Булочка', 'шт', 20, 'НФ-00000009'),
+(2, 'Фарш говяжий', 'кг', 450, 'НФ-00000010'),
+(3, 'Помидор', 'кг', 210, 'НФ-00000011');
+
+INSERT INTO bom (product_id, material_id, quantity) VALUES
+(1, 1, 2),
+(1, 2, 0.4),
+(1, 3, 0.06);
+
+INSERT INTO orders (order_id, code, date, customer_id) VALUES
+(1, '2', '2025-06-06', 2);
+
+INSERT INTO order_items (order_id, product_id, quantity, price, amount) VALUES
+(1, 1, 4, 440, 1760),
+(1, 2, 2, 370, 740),
+(1, 3, 6, 70, 420);
+
+import json:
+
+INSERT INTO counterparties (counterparty_id, name, inn, address, phone, salesman, buyer)
+SELECT
+    id::integer,
+    name,
+    inn,
+    addres,
+    phone,
+    salesman,
+    buyer
+FROM json_to_recordset('
+[
+  {"id": "000000014", "name": "ООО \"Поставка\"", "inn": "", "addres": "г.Пятигорск", "phone": "+79198634592", "salesman": true, "buyer": true},
+  {"id": "000000013", "name": "ООО \"Кинотеатр Квант\"", "inn": "26320045123", "addres": "г. Железноводск, ул. Мира, 123", "phone": "+79884581555", "salesman": true, "buyer": false},
+  {"id": "000000008", "name": "ООО \"Новый JDTO\"", "inn": "26320045111", "addres": "г. Железноводсу", "phone": "+79884581555", "salesman": true, "buyer": false},
+  {"id": "000000015", "name": "ООО \"Ромашка\"", "inn": "4140784214", "addres": "г. Омск, ул. Строителей, 294", "phone": "+79882584546", "salesman": false, "buyer": true},
+  {"id": "000000009", "name": "ООО \"Ипподром\"", "inn": "5874045632", "addres": "г. Уфа, ул. Набережная, 37", "phone": "+79627486389", "salesman": true, "buyer": true},
+  {"id": "000000010", "name": "ООО \"Ассоль\"", "inn": "2629011278", "addres": "г. Калуга, ул. Пушкина, 94", "phone": "+79184572398", "salesman": false, "buyer": true}
+]
+') AS x(id text, name text, inn text, addres text, phone text, salesman boolean, buyer boolean);
+
+select query:
+
+SELECT
+    o.order_id,
+    o.code,
+    o.date,
+    SUM(oi.quantity * b.quantity * m.price) AS total_material_cost
+FROM orders o
+JOIN order_items oi ON oi.order_id = o.order_id
+JOIN bom b ON b.product_id = oi.product_id
+JOIN materials m ON m.material_id = b.material_id
+GROUP BY o.order_id, o.code, o.date
+ORDER BY o.order_id;
